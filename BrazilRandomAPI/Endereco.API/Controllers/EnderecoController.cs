@@ -1,8 +1,8 @@
-using CepBrazilRandomAPI.Models;
-using CepBrazilRandomAPI.Repository.Interfaces;
+using Enderecos.API.Models;
+using Enderecos.API.Repository;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CepBrazilRandomAPI.Controllers
+namespace Enderecos.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]

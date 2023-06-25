@@ -1,7 +1,6 @@
-﻿using CepBrazilRandomAPI.Models;
-using CepBrazilRandomAPI.Repository.Interfaces;
+﻿using Enderecos.API.Models;
 
-namespace CepBrazilRandomAPI.Repository.Implementações
+namespace Enderecos.API.Repository
 {
     public class EnderecoRepository : IEnderecoRepository
     {
@@ -11,12 +10,12 @@ namespace CepBrazilRandomAPI.Repository.Implementações
         public EnderecoRepository(IConfiguration configuration)
         {
             _configuration = configuration;
-            caminhoArquivo = _configuration.GetSection("FilePath").GetSection("Enderecos").Value;
+            caminhoArquivo = _configuration.GetSection("FilePathEnderecos").Value;
         }
         #endregion
 
         #region OBTER ENDERECOS 
-        
+
         public IEnumerable<Endereco> GetEnderecos(EnderecoFiltro enderecoFiltro)
         {
             try
@@ -28,21 +27,21 @@ namespace CepBrazilRandomAPI.Repository.Implementações
                     enderecos = GetEnderecosByTxt()
                                 .Where(end => string.IsNullOrEmpty(enderecoFiltro.cidade) ? true : enderecoFiltro.cidade.Equals(end.Cidade))
                                 .Where(end => string.IsNullOrEmpty(enderecoFiltro.estado) ? true : enderecoFiltro.estado.Equals(end.Estado))
-                                .Where(end => string.IsNullOrEmpty(enderecoFiltro.bairro) ? true : enderecoFiltro.estado.Equals(end.Bairro));
+                                .Where(end => string.IsNullOrEmpty(enderecoFiltro.bairro) ? true : enderecoFiltro.bairro.Equals(end.Bairro));
                 }
                 else
                     enderecos = GetEnderecosByTxt();
-                
+
                 if (enderecos is null || enderecos.Count() == 0)
                     throw new Exception("Não foi possível consultar os endereços!");
 
                 return enderecos;
             }
-            catch(Exception) 
+            catch (Exception)
             {
                 throw new Exception("Não foi possível consultar os endereços!");
             }
-           
+
         }
         #endregion
 
