@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Endereco.API", "Endereco.API\Endereco.API.csproj", "{8DE4A2B2-05ED-4A7B-8D34-BFE64094122E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pessoa.API", "Pessoa.API\Pessoa.API.csproj", "{BA8BC330-989A-4162-BC37-24F4512EE473}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8DE4A2B2-05ED-4A7B-8D34-BFE64094122E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DE4A2B2-05ED-4A7B-8D34-BFE64094122E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DE4A2B2-05ED-4A7B-8D34-BFE64094122E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DE4A2B2-05ED-4A7B-8D34-BFE64094122E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA8BC330-989A-4162-BC37-24F4512EE473}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA8BC330-989A-4162-BC37-24F4512EE473}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA8BC330-989A-4162-BC37-24F4512EE473}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA8BC330-989A-4162-BC37-24F4512EE473}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6D692CAC-34D9-440A-BAC4-A9A8F84F0320}
+	EndGlobalSection
+EndGlobal
