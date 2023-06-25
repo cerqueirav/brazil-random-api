@@ -1,6 +1,8 @@
-﻿namespace Pessoa.API.Repository
+﻿using Pessoas.API.Models;
+
+namespace Pessoas.API.Repository
 {
-    public class PessoaRepository
+    public class PessoaRepository :IPessoaRepository
     {
         #region ATRIBUTOS E CONSTRUTORES
         private string caminhoArquivo;
@@ -12,9 +14,33 @@
         }
         #endregion
 
-        public IEnumerable<Pessoa> GetPessoas(string sexo)
+        #region OBTER NOMES 
+
+        public IEnumerable<NomePessoa> GetNomes(NomeFiltro nomeFiltro)
         {
-            List<Pessoa> pessoas = new List<Pessoa>();
+            try
+            {
+                IEnumerable<NomePessoa> nomes = new List<NomePessoa>();
+
+                nomes = (nomeFiltro is null) ? GetNomesByCsv() : GetNomesByCsv().Where(end => string.IsNullOrEmpty(nomeFiltro.Sexo) ? true : nomeFiltro.Sexo.Equals(end.Sexo));
+                
+                if (nomes is null || nomes.Count() == 0)
+                    throw new Exception("Não foi possível consultar os nomes!");
+
+                return nomes;
+            }
+            catch (Exception)
+            {
+                throw new Exception("Não foi possível consultar os nomes!");
+            }
+
+        }
+        #endregion
+
+        #region MÉTODOS PRIVADOS 
+        private IEnumerable<NomePessoa> GetNomesByCsv()
+        {
+            List<NomePessoa> pessoas = new List<NomePessoa>();
 
             using (StreamReader sr = new StreamReader(caminhoArquivo))
             {
@@ -25,7 +51,7 @@
                 {
                     string[] partes = linha.Split(',');
 
-                    Pessoa pessoa = new Pessoa
+                    NomePessoa pessoa = new NomePessoa
                     {
                         Nome = partes[0].Trim('"'),
                         Regiao = int.Parse(partes[1]),
@@ -40,5 +66,6 @@
 
             return pessoas;
         }
+        #endregion
     }
 }

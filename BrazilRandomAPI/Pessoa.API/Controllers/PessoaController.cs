@@ -1,77 +1,60 @@
-using CepBrazilRandomAPI.Models;
-using CepBrazilRandomAPI.Repository.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Pessoas.API.Models;
+using Pessoas.API.Repository;
 
-namespace CepBrazilRandomAPI.Controllers
+namespace Pessoas.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     public class PessoaController : ControllerBase
     {
-        private IEnderecoRepository _mapperCep;
+        private IPessoaRepository _pessoaRepository;
 
-        public PessoaController(IEnderecoRepository mapperCep)
+        public PessoaController(IPessoaRepository pessoaRepository)
         {
-            _mapperCep = mapperCep;
+            _pessoaRepository = pessoaRepository;
         }
 
-        [HttpGet(Name = "ListarEnderecos")]
-        public ActionResult ListarEnderecos()
+        [HttpGet(Name = "ListarPessoas")]
+        public ActionResult ListarNomes()
         {
             try
             {
-                IEnumerable<Endereco> enderecos = _mapperCep.GetEnderecos(new EnderecoFiltro());
+                IEnumerable<NomePessoa> nomes = _pessoaRepository.GetNomes();
 
-                if (enderecos is null || enderecos.Count() == 0)
-                    return BadRequest("Erro: não foi possível listar os endereços!");
+                if (nomes is null || nomes.Count() == 0)
+                    return BadRequest("Erro: não foi possível listar de nomes!");
 
-                return Ok(enderecos);
+                return Ok(nomes);
             }
             catch (Exception)
             {
-                return BadRequest("Erro: não foi possível listar os endereços!");
-            }
-        }
-
-        [HttpGet("{cep}")]
-        public ActionResult BuscarPorCep(string cep)
-        {
-            if (string.IsNullOrEmpty(cep))
-                return BadRequest("O CEP informado é inválido!");
-
-            try
-            {
-                var endereco = _mapperCep.GetEnderecos(new EnderecoFiltro()).Where(end => end.CEP.Equals(cep)).FirstOrDefault();
-                return (endereco is null) ? NotFound("O endereço não foi localizado!") : Ok(endereco);
-            }
-            catch(Exception)
-            {
-                return BadRequest("Ocorreu um erro ao pesquisar o CEP!");
+                return BadRequest("Erro: não foi possível listar os nomes!");
             }
         }
 
         [HttpPost("Aleatorio")]
-        public ActionResult BuscarEnderecoAleatorio([FromBody] EnderecoFiltro? enderecoFiltro)
+        public ActionResult BuscarNomeAleatorio(NomeFiltro? nomeFiltro)
         {
             try
             {
-                IEnumerable<Endereco> enderecos = _mapperCep.GetEnderecos(enderecoFiltro);
-                Endereco enderecoAleatorio = new Endereco();
+                IEnumerable<NomePessoa> nomes = _pessoaRepository.GetNomes(nomeFiltro);
+                NomePessoa nomeAleatorio = new NomePessoa();
 
-                if (enderecos is null || enderecos.Count() == 0)
-                    return BadRequest("Não foi possível gerar o endereço!");
+                if (nomes is null || nomes.Count() == 0)
+                    return BadRequest("Não foi possível gerar o nome!");
 
-                if (enderecos.Any())
+                if (nomes.Any())
                 {
                     Random random = new Random();
-                    int index = random.Next(0, enderecos.Count());
-                    enderecoAleatorio = enderecos.ElementAt(index);
+                    int index = random.Next(0, nomes.Count());
+                    nomeAleatorio = nomes.ElementAt(index);
                 }
-                return Ok(enderecoAleatorio);
+                return Ok(nomeAleatorio);
             }
             catch (Exception)
             {
-                return BadRequest("Não foi possível gerar o endereço!");
+                return BadRequest("Não foi possível gerar o nome!");
             }
         }
     }

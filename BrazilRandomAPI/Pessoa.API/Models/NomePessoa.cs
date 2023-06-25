@@ -1,6 +1,6 @@
-﻿namespace CepBrazilRandomAPI.Models
+﻿namespace Pessoas.API.Models
 {
-    public class Pessoa
+    public class NomePessoa
     {
         public string Nome { get; set; }
         public int Regiao { get; set; }
