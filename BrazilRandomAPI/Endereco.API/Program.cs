@@ -1,5 +1,4 @@
-using CepBrazilRandomAPI.Repository.Implementações;
-using CepBrazilRandomAPI.Repository.Interfaces;
+using Enderecos.API.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 

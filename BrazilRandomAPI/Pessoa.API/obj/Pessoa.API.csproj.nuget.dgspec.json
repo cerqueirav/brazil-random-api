@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Victor\\brazil-random-api\\BrazilRandomAPI\\Pessoa.API\\Pessoa.API.csproj": {}
+    "C:\\Users\\Victor\\Source\\Repos\\brazil-random-api\\BrazilRandomAPI\\Pessoa.API\\Pessoa.API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Victor\\brazil-random-api\\BrazilRandomAPI\\Pessoa.API\\Pessoa.API.csproj": {
+    "C:\\Users\\Victor\\Source\\Repos\\brazil-random-api\\BrazilRandomAPI\\Pessoa.API\\Pessoa.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Victor\\brazil-random-api\\BrazilRandomAPI\\Pessoa.API\\Pessoa.API.csproj",
+        "projectUniqueName": "C:\\Users\\Victor\\Source\\Repos\\brazil-random-api\\BrazilRandomAPI\\Pessoa.API\\Pessoa.API.csproj",
         "projectName": "Pessoa.API",
-        "projectPath": "C:\\Users\\Victor\\brazil-random-api\\BrazilRandomAPI\\Pessoa.API\\Pessoa.API.csproj",
+        "projectPath": "C:\\Users\\Victor\\Source\\Repos\\brazil-random-api\\BrazilRandomAPI\\Pessoa.API\\Pessoa.API.csproj",
         "packagesPath": "C:\\Users\\Victor\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Victor\\brazil-random-api\\BrazilRandomAPI\\Pessoa.API\\obj\\",
+        "outputPath": "C:\\Users\\Victor\\Source\\Repos\\brazil-random-api\\BrazilRandomAPI\\Pessoa.API\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\dotnet\\sdk\\NuGetFallbackFolder"

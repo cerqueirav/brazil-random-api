@@ -554,11 +554,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Victor\\brazil-random-api\\BrazilRandomAPI\\Endereco.API\\Endereco.API.csproj",
-      "projectName": "Endereco.API",
-      "projectPath": "C:\\Users\\Victor\\brazil-random-api\\BrazilRandomAPI\\Endereco.API\\Endereco.API.csproj",
+      "projectUniqueName": "C:\\Users\\Victor\\Source\\Repos\\brazil-random-api\\BrazilRandomAPI\\Endereco.API\\Enderecos.API.csproj",
+      "projectName": "Enderecos.API",
+      "projectPath": "C:\\Users\\Victor\\Source\\Repos\\brazil-random-api\\BrazilRandomAPI\\Endereco.API\\Enderecos.API.csproj",
       "packagesPath": "C:\\Users\\Victor\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Victor\\brazil-random-api\\BrazilRandomAPI\\Endereco.API\\obj\\",
+      "outputPath": "C:\\Users\\Victor\\Source\\Repos\\brazil-random-api\\BrazilRandomAPI\\Endereco.API\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\dotnet\\sdk\\NuGetFallbackFolder"

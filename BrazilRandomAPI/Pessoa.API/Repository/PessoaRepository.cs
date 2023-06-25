@@ -1,6 +1,4 @@
-﻿using CepBrazilRandomAPI.Models;
-
-namespace CepBrazilRandomAPI.Repository.Implementações
+﻿namespace Pessoa.API.Repository
 {
     public class PessoaRepository
     {
@@ -10,7 +8,7 @@ namespace CepBrazilRandomAPI.Repository.Implementações
         public PessoaRepository(IConfiguration configuration)
         {
             _configuration = configuration;
-            caminhoArquivo = _configuration.GetSection("FilePath").GetSection("Pessoas").Value;
+            caminhoArquivo = _configuration.GetSection("FilePathPessoas").Value;
         }
         #endregion
 

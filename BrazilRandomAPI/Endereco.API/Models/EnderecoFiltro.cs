@@ -1,4 +1,4 @@
-﻿namespace CepBrazilRandomAPI.Models
+﻿namespace Enderecos.API.Models
 {
     public class EnderecoFiltro
     {

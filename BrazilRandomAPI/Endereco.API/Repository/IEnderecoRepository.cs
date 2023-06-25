@@ -1,6 +1,6 @@
-﻿using CepBrazilRandomAPI.Models;
+﻿using Enderecos.API.Models;
 
-namespace CepBrazilRandomAPI.Repository.Interfaces
+namespace Enderecos.API.Repository
 {
     public interface IEnderecoRepository
     {
