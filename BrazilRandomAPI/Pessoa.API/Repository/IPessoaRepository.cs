@@ -4,6 +4,7 @@ namespace Pessoas.API.Repository
 {
     public interface IPessoaRepository
     {
-        IEnumerable<NomePessoa> GetNomes(NomeFiltro nomeFiltro = null);
+        IEnumerable<NomePessoa> GetNomes();
+        void CreateDataset();
     }
 }
