@@ -15,30 +15,12 @@ namespace Pessoas.API.Controllers
             _pessoaRepository = pessoaRepository;
         }
 
-        [HttpGet(Name = "ListarPessoas")]
-        public ActionResult ListarNomes()
+        [HttpPost("Aleatorio")]
+        public ActionResult BuscarNomeAleatorio()
         {
             try
             {
                 IEnumerable<NomePessoa> nomes = _pessoaRepository.GetNomes();
-
-                if (nomes is null || nomes.Count() == 0)
-                    return BadRequest("Erro: não foi possível listar de nomes!");
-
-                return Ok(nomes);
-            }
-            catch (Exception)
-            {
-                return BadRequest("Erro: não foi possível listar os nomes!");
-            }
-        }
-
-        [HttpPost("Aleatorio")]
-        public ActionResult BuscarNomeAleatorio(NomeFiltro? nomeFiltro)
-        {
-            try
-            {
-                IEnumerable<NomePessoa> nomes = _pessoaRepository.GetNomes(nomeFiltro);
                 NomePessoa nomeAleatorio = new NomePessoa();
 
                 if (nomes is null || nomes.Count() == 0)
@@ -55,6 +37,20 @@ namespace Pessoas.API.Controllers
             catch (Exception)
             {
                 return BadRequest("Não foi possível gerar o nome!");
+            }
+        }
+
+        [HttpGet("PopularBanco")]
+        public ActionResult PopularBanco()
+        {
+            try
+            {
+                _pessoaRepository.CreateDataset();
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return BadRequest("Não foi possível popular o banco de dados!");
             }
         }
     }

@@ -2,10 +2,10 @@
 {
     public class NomePessoa
     {
-        public string Nome { get; set; }
-        public int Regiao { get; set; }
-        public int Frequencia { get; set; }
-        public int Rank { get; set; }
-        public string Sexo { get; set; }
+        public int? Id { get; set; }
+        public string? Nome { get; set; }
+        public string? Frequencia { get; set; }
+        public string? Rank { get; set; }
+        public string? Sexo { get; set; }
     }
 }

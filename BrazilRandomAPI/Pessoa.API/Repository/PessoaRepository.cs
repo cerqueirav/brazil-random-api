@@ -1,30 +1,26 @@
 ﻿using Pessoas.API.Models;
+using System.Data.SqlClient;
 
 namespace Pessoas.API.Repository
 {
     public class PessoaRepository :IPessoaRepository
     {
         #region ATRIBUTOS E CONSTRUTORES
-        private string caminhoArquivo;
         private IConfiguration _configuration;
         public PessoaRepository(IConfiguration configuration)
         {
             _configuration = configuration;
-            caminhoArquivo = _configuration.GetSection("FilePathPessoas").Value;
         }
         #endregion
 
-        #region OBTER NOMES 
-
-        public IEnumerable<NomePessoa> GetNomes(NomeFiltro nomeFiltro)
+        #region LISTAR NOMES
+        public IEnumerable<NomePessoa> GetNomes()
         {
             try
             {
-                IEnumerable<NomePessoa> nomes = new List<NomePessoa>();
+                var nomes = GetNomesFromDb();
 
-                nomes = (nomeFiltro is null) ? GetNomesByCsv() : GetNomesByCsv().Where(end => string.IsNullOrEmpty(nomeFiltro.Sexo) ? true : nomeFiltro.Sexo.Equals(end.Sexo));
-                
-                if (nomes is null || nomes.Count() == 0)
+                if (nomes is null)
                     throw new Exception("Não foi possível consultar os nomes!");
 
                 return nomes;
@@ -33,38 +29,118 @@ namespace Pessoas.API.Repository
             {
                 throw new Exception("Não foi possível consultar os nomes!");
             }
+        }
+        #endregion
 
+        #region CREATE DATASET DB
+        public void CreateDataset()
+        {
+            try
+            {
+                InsertRangeDataset();
+            }
+            catch
+            {
+                throw new Exception("Não foi possível criar o dataset!");
+            }
         }
         #endregion
 
         #region MÉTODOS PRIVADOS 
-        private IEnumerable<NomePessoa> GetNomesByCsv()
+        private void InsertRangeDataset()
         {
-            List<NomePessoa> pessoas = new List<NomePessoa>();
-
-            using (StreamReader sr = new StreamReader(caminhoArquivo))
+            try
             {
-                sr.ReadLine();
-
-                string linha;
-                while ((linha = sr.ReadLine()) != null)
+                using (var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
                 {
-                    string[] partes = linha.Split(',');
+                    connection.Open();
 
-                    NomePessoa pessoa = new NomePessoa
+                    using (var transaction = connection.BeginTransaction())
                     {
-                        Nome = partes[0].Trim('"'),
-                        Regiao = int.Parse(partes[1]),
-                        Frequencia = int.Parse(partes[2]),
-                        Rank = int.Parse(partes[3]),
-                        Sexo = partes[4].Trim('"')
-                    };
+                        using (var command = connection.CreateCommand())
+                        {
+                            command.Transaction = transaction;
 
-                    pessoas.Add(pessoa);
+                            command.CommandText = "INSERT INTO Pessoa (Nome, Frequencia, Rank, Sexo) VALUES (@Nome, @Frequencia, @Rank, @Sexo)";
+
+                            using (StreamReader sr = new StreamReader(_configuration.GetSection("FilePathPessoas").Value))
+                            {
+                                sr.ReadLine();
+
+                                string linha;
+                                while ((linha = sr.ReadLine()) != null)
+                                {
+                                    string[] partes = linha.Split(',');
+
+                                    command.Parameters.Clear();
+                                    command.Parameters.AddWithValue("@Nome", partes[0].Trim('"'));
+                                    command.Parameters.AddWithValue("@Frequencia", partes[2]);
+                                    command.Parameters.AddWithValue("@Rank", partes[3]);
+                                    command.Parameters.AddWithValue("@Sexo", partes[4].Trim('"'));
+
+                                    command.ExecuteNonQuery();
+                                }
+                            }
+                        }
+
+                        transaction.Commit();
+                    }
+
+                    connection.Close();
                 }
             }
+            catch (Exception ex)
+            {
+                throw new Exception("Não foi possível salvar no banco de dados!", ex);
+            }
+        }
 
-            return pessoas;
+        private IEnumerable<NomePessoa> GetNomesFromDb()
+        {
+            try
+            {
+                using (var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+                {
+                    connection.Open();
+
+                    using (var command = connection.CreateCommand())
+                    {
+                        command.CommandText = "SELECT * FROM PESSOA";
+
+                        try
+                        {
+                            using (var reader = command.ExecuteReader())
+                            {
+                                var nomes = new List<NomePessoa>();
+
+                                while (reader.Read())
+                                {
+                                    var pessoa = new NomePessoa
+                                    {
+                                        Id = Convert.ToInt32(reader["Id"]),
+                                        Nome = reader["Nome"].ToString(),
+                                        Frequencia = reader["Frequencia"].ToString(),
+                                        Rank = reader["Rank"].ToString(),
+                                        Sexo = reader["Sexo"].ToString(),
+                                    };
+
+                                    nomes.Add(pessoa);
+                                }
+
+                                return nomes;
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            throw new Exception("Não foi possível listar os nomes!");
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                return Enumerable.Empty<NomePessoa>();
+            }
         }
         #endregion
     }
