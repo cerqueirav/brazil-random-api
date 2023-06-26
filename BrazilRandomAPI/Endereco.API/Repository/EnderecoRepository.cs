@@ -190,7 +190,6 @@ namespace Enderecos.API.Repository
         {
             try
             {
-                using (var reader = new StreamReader(_configuration.GetSection("FilePathEnderecos").Value))
                 using (var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
                 {
                     connection.Open();
@@ -234,9 +233,9 @@ namespace Enderecos.API.Repository
                     connection.Close();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-
+                throw new Exception("Não foi possível carregar o dataset!");
             }
         }
         private Endereco GetEnderecoPorLinha(string linha)
