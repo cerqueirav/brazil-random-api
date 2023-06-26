@@ -1,9 +1,19 @@
-﻿namespace Enderecos.API.Models
+﻿using System.ComponentModel;
+
+namespace Enderecos.API.Models
 {
     public class EnderecoFiltro
     {
-        public string? bairro { get; set; }
-        public string? cidade { get; set; }
-        public string? estado { get; set; }
+        [DefaultValue("")]
+        public string? Bairro { get; set; }
+        
+        [DefaultValue("")]
+        public string? Cidade { get; set; }
+
+        [DefaultValue("")]
+        public string? Estado { get; set; }
+
+        [DefaultValue(1)]
+        public int Quantidade { get; set; } = 1;
     }
 }

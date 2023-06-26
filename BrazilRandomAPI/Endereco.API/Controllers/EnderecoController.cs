@@ -8,29 +8,11 @@ namespace Enderecos.API.Controllers
     [Route("[controller]")]
     public class EnderecoController : ControllerBase
     {
-        private IEnderecoRepository _mapperCep;
+        private IEnderecoRepository _enderecoRepository;
 
-        public EnderecoController(IEnderecoRepository mapperCep)
+        public EnderecoController(IEnderecoRepository enderecoRepository)
         {
-            _mapperCep = mapperCep;
-        }
-
-        [HttpGet(Name = "ListarEnderecos")]
-        public ActionResult ListarEnderecos()
-        {
-            try
-            {
-                IEnumerable<Endereco> enderecos = _mapperCep.GetEnderecos(new EnderecoFiltro());
-
-                if (enderecos is null || enderecos.Count() == 0)
-                    return BadRequest("Erro: não foi possível listar os endereços!");
-
-                return Ok(enderecos);
-            }
-            catch (Exception)
-            {
-                return BadRequest("Erro: não foi possível listar os endereços!");
-            }
+            _enderecoRepository = enderecoRepository;
         }
 
         [HttpGet("{cep}")]
@@ -41,7 +23,7 @@ namespace Enderecos.API.Controllers
 
             try
             {
-                var endereco = _mapperCep.GetEnderecos(new EnderecoFiltro()).Where(end => end.CEP.Equals(cep)).FirstOrDefault();
+                var endereco = _enderecoRepository.GetEnderecoByCep(cep);
                 return (endereco is null) ? NotFound("O endereço não foi localizado!") : Ok(endereco);
             }
             catch(Exception)
@@ -55,23 +37,37 @@ namespace Enderecos.API.Controllers
         {
             try
             {
-                IEnumerable<Endereco> enderecos = _mapperCep.GetEnderecos(enderecoFiltro);
-                Endereco enderecoAleatorio = new Endereco();
-
-                if (enderecos is null || enderecos.Count() == 0)
+                IEnumerable<Endereco> enderecos = (enderecoFiltro is null)
+                    ? _enderecoRepository.GetEnderecos()
+                    : _enderecoRepository.GetEnderecosComFiltro(enderecoFiltro);
+                        
+                if (enderecos == null || enderecos.Count() == 0)
                     return BadRequest("Não foi possível gerar o endereço!");
 
-                if (enderecos.Any())
-                {
-                    Random random = new Random();
-                    int index = random.Next(0, enderecos.Count());
-                    enderecoAleatorio = enderecos.ElementAt(index);
-                }
-                return Ok(enderecoAleatorio);
+                int qtdEnderecos = enderecoFiltro?.Quantidade ?? 1;
+
+                Random random = new Random();
+                List<Endereco> enderecosAleatorios = enderecos.OrderBy(_ => random.Next()).Take(qtdEnderecos).ToList();
+
+                return Ok(enderecosAleatorios);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Ocorreu um erro ao gerar o endereço: " + ex.Message);
+            }
+        }
+
+        [HttpGet("PopularBanco")]
+        public ActionResult PopularBanco()
+        {
+            try
+            {
+                _enderecoRepository.CreateDataset();
+                return Ok();
             }
             catch (Exception)
             {
-                return BadRequest("Não foi possível gerar o endereço!");
+                return BadRequest("Não foi possível popular o banco de dados!");
             }
         }
     }

@@ -4,6 +4,9 @@ namespace Enderecos.API.Repository
 {
     public interface IEnderecoRepository
     {
-        IEnumerable<Endereco> GetEnderecos(EnderecoFiltro enderecoFiltro);
+        IEnumerable<Endereco> GetEnderecos();
+        IEnumerable<Endereco> GetEnderecosComFiltro(EnderecoFiltro enderecoFiltro);
+        Endereco GetEnderecoByCep(string cep);
+        void CreateDataset();
     }
 }
